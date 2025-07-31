@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LATIHAN PENGUKUHAN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .quiz-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .question {
+      width: 100%;
+      padding: 15px;
+      background: #fdfdfd;
+      border-radius: 8px;
+      border: 2px dashed #ccc;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .answers {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .answer {
+      padding: 10px 15px;
+      background: #3498db;
+      color: white;
+      border-radius: 6px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .answer.correct {
+      background: #2ecc71;
+    }
+
+    .answer.incorrect {
+      background: #e74c3c;
+    }
+
+    .dropzone {
+      min-height: 50px;
+      border: 2px dashed #aaa;
+      border-radius: 5px;
+      padding: 10px;
+      width: 100%;
+      transition: background 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>LATIHAN PENGUKUHAN</h2>
+
+  <div class="quiz-container">
+    <div class="question dropzone" data-answer="Kloroplas">
+      Sel yang penting untuk menjalankan proses fotosintesis
+    </div>
+    <div class="question dropzone" data-answer="Mitokondria">
+      Menghasilkan tenaga untuk tindak balas sel
+    </div>
+    <div class="question dropzone" data-answer="Nukleus">
+      Mengawal semua aktiviti sel
+    </div>
+    <div class="question dropzone" data-answer="Sel Membrane">
+      Mengawal pergerakan bahan keluar dan masuk dari sel
+    </div>
+    <div class="question dropzone" data-answer="Dinding Sel">
+      Memberi sokongan dan kekuatan pada bentuk sel
+    </div>
+  </div>
+
+  <div class="answers">
+    <div class="answer" draggable="true" id="Nukleus">Nukleus</div>
+    <div class="answer" draggable="true" id="Sel Membrane">Sel Membrane</div>
+    <div class="answer" draggable="true" id="Dinding Sel">Dinding Sel</div>
+    <div class="answer" draggable="true" id="Kloroplas">Kloroplas</div>
+    <div class="answer" draggable="true" id="Mitokondria">Mitokondria</div>
+  </div>
+</div>
+
+<script>
+  const answers = document.querySelectorAll('.answer');
+  const dropzones = document.querySelectorAll('.dropzone');
+
+  answers.forEach(answer => {
+    answer.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', answer.id);
+    });
+  });
+
+  dropzones.forEach(zone => {
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zone.style.background = "#e0f7fa";
+    });
+
+    zone.addEventListener('dragleave', () => {
+      zone.style.background = "white";
+    });
+
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.style.background = "white";
+      const draggedId = e.dataTransfer.getData('text/plain');
+      const draggedEl = document.getElementById(draggedId);
+
+      if (zone.querySelector('.answer')) return; // prevent multiple drops
+
+      zone.appendChild(draggedEl);
+
+      if (draggedEl.id === zone.dataset.answer) {
+        draggedEl.classList.add("correct");
+        draggedEl.classList.remove("incorrect");
+      } else {
+        draggedEl.classList.add("incorrect");
+        draggedEl.classList.remove("correct");
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
